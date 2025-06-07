@@ -1,0 +1,660 @@
+<script setup>
+import { ref, onMounted, onBeforeUnmount,watch,reactive } from 'vue'
+import { useRouter } from 'vue-router'
+import ProfileItem from '../components/ProfilPage.vue'
+
+const router = useRouter()
+const user = ref(null)
+const isLoggedIn = ref(false)
+const dropdownOpen = ref(false)
+const selectedMenu = ref('')
+const email = ref(user.value?.email || '')
+const newPassword = ref('')
+const confirmPassword = ref('')
+const message = ref('')
+const successMessage = ref('')
+const errorMessage = ref('')
+
+const form = ref({
+  name: '',
+  email: '',
+  phone: '',
+  photo: null
+})
+
+
+const newAccount = reactive({
+  username: '',
+  email: '',
+  password: ''
+})
+
+
+
+function submitNewAccount() {
+  successMessage.value = ''
+  errorMessage.value = ''
+
+
+  if (!newAccount.username || !newAccount.email || !newAccount.password) {
+    errorMessage.value = 'Semua field harus diisi.'
+    return
+  }
+
+
+  let accounts = JSON.parse(localStorage.getItem('accounts') || '[]')
+
+
+  const duplicate = accounts.find(
+    acc => acc.username === newAccount.username || acc.email === newAccount.email
+  )
+  if (duplicate) {
+    errorMessage.value = 'Username atau email sudah terdaftar.'
+    return
+  }
+
+  accounts.push({ ...newAccount })
+  localStorage.setItem('accounts', JSON.stringify(accounts))
+
+  successMessage.value = 'Akun berhasil ditambahkan!'
+
+
+  newAccount.username = ''
+  newAccount.email = ''
+  newAccount.password = ''
+}
+
+const privacySettings = reactive({
+  dataSharing: false,
+  emailNotifications: true,
+  showProfilePublic: false,
+})
+
+function savePrivacySettings() {
+  localStorage.setItem('privacySettings', JSON.stringify(privacySettings))
+  alert('Pengaturan privasi berhasil disimpan!')
+}
+
+onMounted(() => {
+  const saved = localStorage.getItem('privacySettings')
+  if (saved) {
+    const parsed = JSON.parse(saved)
+    Object.assign(privacySettings, parsed)
+  }
+})
+
+function updateAccount() {
+  if (newPassword.value && newPassword.value !== confirmPassword.value) {
+    message.value = 'Password konfirmasi tidak cocok!'
+    return
+  }
+
+
+  user.value.email = email.value
+  localStorage.setItem('loggedInUser', JSON.stringify(user.value))
+
+
+  newPassword.value = ''
+  confirmPassword.value = ''
+  message.value = 'Pengaturan akun berhasil diperbarui!'
+}
+
+const locations = [
+  { code: 'jakarta', label: 'Jakarta' },
+  { code: 'bandung', label: 'Bandung' },
+  { code: 'surabaya', label: 'Surabaya' },
+  { code: 'yogyakarta', label: 'Yogyakarta' },
+]
+
+
+const selectedLocation = ref(localStorage.getItem('selectedLocation') || '')
+
+
+watch(selectedLocation, (newLoc) => {
+  localStorage.setItem('selectedLocation', newLoc)
+})
+
+const languages = [
+  { code: 'id', label: 'Bahasa Indonesia' },
+  { code: 'en', label: 'English' },
+  { code: 'jp', label: '日本語' }
+]
+
+
+const selectedLanguage = ref(localStorage.getItem('selectedLanguage') || 'id')
+
+
+watch(selectedLanguage, (newLang) => {
+  localStorage.setItem('selectedLanguage', newLang)
+})
+
+const photoPreview = ref(null)
+
+function handlePhotoChange(event) {
+  const file = event.target.files[0]
+  if (file) {
+    form.value.photo = file
+    const reader = new FileReader()
+    reader.onload = e => {
+      photoPreview.value = e.target.result
+    }
+    reader.readAsDataURL(file)
+  }
+}
+
+function submitForm() {
+  if (!form.value.name.trim() || !form.value.email.trim()) {
+    alert('Nama dan email wajib diisi!')
+    return
+  }
+
+
+  user.value.name = form.value.name
+  user.value.email = form.value.email
+  user.value.phone = form.value.phone
+
+  alert('Profil berhasil diperbarui!')
+
+
+  photoPreview.value = null
+}
+
+onMounted(() => {
+  const loggedIn = localStorage.getItem('loggedInUser')
+  if (loggedIn) {
+    try {
+      user.value = JSON.parse(loggedIn)
+      isLoggedIn.value = true
+
+
+      form.value.name = user.value.name || ''
+      form.value.email = user.value.email || ''
+      form.value.phone = user.value.phone || ''
+
+    } catch (e) {
+      console.error('Gagal memuat data user:', e)
+      isLoggedIn.value = false
+    }
+  } else {
+    isLoggedIn.value = false
+  }
+
+  document.addEventListener('click', handleClickOutside)
+})
+
+onBeforeUnmount(() => {
+  document.removeEventListener('click', handleClickOutside)
+})
+
+function toggleDropdown2() {
+  dropdownOpen.value = !dropdownOpen.value
+}
+
+function handleClickOutside(event) {
+  const dropdown = document.querySelector('.dropdown-toggle')
+  const menu = document.querySelector('.dropdown-menu')
+  if (
+    dropdown && !dropdown.contains(event.target) &&
+    menu && !menu.contains(event.target)
+  ) {
+    dropdownOpen.value = false
+  }
+}
+
+function goToLogin() {
+  router.push('/login')
+}
+
+function goToRegister() {
+  router.push('/register')
+}
+
+function logout() {
+  localStorage.removeItem('loggedInUser')
+  user.value = null
+  isLoggedIn.value = false
+  router.push('/login')
+}
+
+function selectMenu(menu) {
+  selectedMenu.value = menu
+}
+
+const navItems = ref([
+  { name: 'Dashboard', link: '#', active: false },
+  { name: 'Home', link: '#', active: false },
+  { name: 'Edukasi & Tips', link: '/edukasi', active: false },
+  {
+    name: 'Tukar Poin',
+    link: '#',
+    active: false,
+    hasDropdown: true,
+    children: [
+      { name: 'Form Input Sampah', link: '#' },
+      { name: 'Riwayat Sampah', link: '#' },
+      { name: 'Daftar Bank Sampah', link: '#' },
+      { name: 'Eco Challenge Mingguan', link: '#' }
+    ]
+  }
+])
+
+
+</script>
+
+<template>
+  <div class="min-h-screen bg-gray-100">
+
+    <header class="bg-white text-black">
+      <div class="container mx-auto px-6 md:px-32 py-3 flex items-center justify-between">
+        <img src="../components/img/Logo.png" alt="Logo" class="w-28 h-8 object-cover" />
+
+        <form class="hidden md:flex w-[850px]">
+          <input
+            type="text"
+            placeholder="Masukkan nama Kota/kecamatan"
+            class="w-full py-2 px-4 rounded-l-md text-sm border border-gray-300 focus:ring-2 focus:ring-green-400"
+          />
+          <button
+            type="submit"
+            class="bg-green-500 hover:bg-green-600 text-white px-4 rounded-r-md"
+          >
+            <ion-icon name="search-outline"></ion-icon>
+          </button>
+        </form>
+
+        <div v-if="isLoggedIn && user" class="flex items-center gap-2">
+          <img
+            :src="user.photo || '/src/components/img/profil.webp'"
+            alt="profil"
+            class="w-10 h-10 rounded-full object-cover"
+          />
+          <span class="text-sm text-black font-medium">{{ user.name }}</span>
+        </div>
+
+        <div v-else class="flex gap-3">
+          <button
+            @click="goToLogin"
+            class="px-4 py-2 text-sm font-medium text-green-600 border border-green-600 rounded-md hover:bg-green-50 transition duration-200"
+          >
+            Login
+          </button>
+          <button
+            @click="goToRegister"
+            class="px-4 py-2 text-sm font-medium text-white bg-green-600 rounded-md hover:bg-green-700 transition duration-200"
+          >
+            Daftar
+          </button>
+        </div>
+      </div>
+    </header>
+
+
+    <nav class="bg-white shadow">
+      <div class="container mx-auto px-4">
+        <ul class="flex justify-center items-center space-x-8 py-4 text-sm font-medium relative">
+          <li v-for="(item, index) in navItems" :key="index" class="relative">
+            <div v-if="item.hasDropdown">
+              <button
+                @click="toggleDropdown2"
+                class="dropdown-toggle flex items-center px-3 py-1 hover:text-green-600"
+                type="button"
+              >
+                {{ item.name }}
+                <svg
+                  class="ml-1 w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 9l-7 7-7-7"
+                  />
+                </svg>
+              </button>
+              <div
+                v-if="dropdownOpen"
+                class="dropdown-menu absolute left-0 top-full mt-2 bg-white border rounded shadow z-20"
+              >
+                <a
+                  v-for="(child, cIndex) in item.children"
+                  :key="cIndex"
+                  :href="child.link"
+                  class="px-4 py-2 text-sm hover:bg-green-100 whitespace-nowrap block text-left"
+                >
+                  {{ child.name }}
+                </a>
+              </div>
+            </div>
+            <div v-else>
+              <a
+                :href="item.link"
+                class="px-3 py-1 hover:text-green-600 font-medium"
+              >
+                {{ item.name }}
+              </a>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+
+    <div class="bg-green-200 py-10">
+      <div class="text-center">
+        <h1 class="text-3xl font-bold text-white">Profil</h1>
+      </div>
+    </div>
+
+
+    <div class="container mx-auto mt-10 px-6 flex flex-col lg:flex-row gap-6">
+
+      <div class="flex-shrink-0">
+        <img
+          :src="user?.photo || '/src/components/img/profil.webp'"
+          alt="Profile"
+          class="rounded-lg w-60 h-auto object-cover"
+        />
+      </div>
+
+      <div class="flex-shrink-0 w-60">
+        <div class="bg-white rounded-lg shadow divide-y">
+          <ProfileItem icon="fa-user-edit" text="Edit Profil" @click="() => selectMenu('edit-profil')" />
+          <ProfileItem icon="fa-globe" text="Bahasa" @click="() => selectMenu('bahasa')" />
+          <ProfileItem icon="fa-map-marker-alt" text="Lokasi" @click="() => selectMenu('lokasi')" />
+          <ProfileItem icon="fa-cog" text="Pengaturan Akun" @click="() => selectMenu('pengaturan-akun')" />
+          <ProfileItem icon="fa-info-circle" text="Informasi" @click="() => selectMenu('informasi')" />
+          <ProfileItem icon="fa-shield-alt" text="Keamanan dan Privasi" @click="() => selectMenu('privasi')" />
+          <ProfileItem icon="fa-user-plus" text="Tambahkan Akun" @click="() => selectMenu('tambah-akun')" />
+          <ProfileItem icon="fa-sign-out-alt" text="Keluar" @click="logout" />
+        </div>
+      </div>
+
+
+      <div class="flex-1">
+        <div class="bg-white rounded-lg shadow p-6 min-h-[300px]">
+
+          <template v-if="selectedMenu === 'edit-profil'">
+            <h2 class="text-2xl font-bold mb-6 text-green-700">Edit Profil</h2>
+
+            <form @submit.prevent="submitForm" class="space-y-6 max-w-md">
+
+              <div>
+                <label class="block mb-2 font-medium text-gray-700">Foto Profil</label>
+                <div class="flex items-center gap-4">
+                  <img
+                    :src="photoPreview || (user?.photo || '/src/components/img/profil.webp')"
+                    alt="Foto Profil"
+                    class="w-24 h-24 rounded-full object-cover border border-gray-300"
+                  />
+                  <input type="file" accept="image/*" @change="handlePhotoChange" />
+                </div>
+              </div>
+
+              <div>
+                <label for="name" class="block mb-2 font-medium text-gray-700">Nama Lengkap</label>
+                <input
+                  id="name"
+                  v-model="form.name"
+                  type="text"
+                  required
+                  placeholder="Masukkan nama lengkap"
+                  class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
+                />
+              </div>
+
+              <div>
+                <label for="email" class="block mb-2 font-medium text-gray-700">Email</label>
+                <input
+                  id="email"
+                  v-model="form.email"
+                  type="email"
+                  required
+                  placeholder="Masukkan email"
+                  class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
+                />
+              </div>
+
+              <div>
+                <label for="phone" class="block mb-2 font-medium text-gray-700">Nomor HP</label>
+                <input
+                  id="phone"
+                  v-model="form.phone"
+                  type="tel"
+                  placeholder="Masukkan nomor HP"
+                  class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
+                />
+              </div>
+
+              <div>
+                <button
+                  type="submit"
+                  class="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-2 rounded-md transition"
+                >
+                  Simpan Perubahan
+                </button>
+              </div>
+            </form>
+          </template>
+
+       <template v-else-if="selectedMenu === 'bahasa'">
+  <h2 class="text-xl font-bold mb-4">Pengaturan Bahasa</h2>
+  <p>Pilih bahasa yang kamu inginkan:</p>
+  <ul class="mt-4 space-y-2">
+    <li v-for="lang in languages" :key="lang.code">
+      <label class="flex items-center gap-2 cursor-pointer">
+        <input
+          type="radio"
+          :value="lang.code"
+          v-model="selectedLanguage"
+          class="form-radio text-green-600"
+        />
+        <span>{{ lang.label }}</span>
+      </label>
+    </li>
+  </ul>
+  <p class="mt-4 text-green-600 font-semibold">
+    Bahasa saat ini: {{ languages.find(l => l.code === selectedLanguage)?.label }}
+  </p>
+</template>
+
+
+
+       <template v-else-if="selectedMenu === 'lokasi'">
+  <h2 class="text-xl font-bold mb-4">Pengaturan Lokasi</h2>
+  <p>Pilih lokasi kamu:</p>
+
+  <select
+    v-model="selectedLocation"
+    class="mt-2 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
+  >
+    <option disabled value="">-- Pilih lokasi --</option>
+    <option v-for="loc in locations" :key="loc.code" :value="loc.code">
+      {{ loc.label }}
+    </option>
+  </select>
+
+  <p class="mt-4 text-green-600 font-semibold" v-if="selectedLocation">
+    Lokasi saat ini: {{ locations.find(l => l.code === selectedLocation)?.label }}
+  </p>
+</template>
+
+
+     <template v-else-if="selectedMenu === 'pengaturan-akun'">
+  <h2 class="text-xl font-bold mb-4">Pengaturan Akun</h2>
+
+  <form @submit.prevent="updateAccount" class="space-y-4 max-w-md">
+    <div>
+      <label class="block mb-1 font-semibold" for="email">Email</label>
+      <input
+        id="email"
+        type="email"
+        v-model="email"
+        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
+        required
+      />
+    </div>
+
+    <div>
+      <label class="block mb-1 font-semibold" for="newPassword">Password Baru</label>
+      <input
+        id="newPassword"
+        type="password"
+        v-model="newPassword"
+        placeholder="Kosongkan jika tidak ingin ganti"
+        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
+      />
+    </div>
+
+    <div>
+      <label class="block mb-1 font-semibold" for="confirmPassword">Konfirmasi Password</label>
+      <input
+        id="confirmPassword"
+        type="password"
+        v-model="confirmPassword"
+        placeholder="Konfirmasi password baru"
+        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
+      />
+    </div>
+
+    <button
+      type="submit"
+      class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition"
+    >
+      Simpan
+    </button>
+
+    <p class="mt-2 text-green-600 font-semibold" v-if="message">{{ message }}</p>
+  </form>
+</template>
+
+
+     <template v-else-if="selectedMenu === 'informasi'">
+  <h2 class="text-xl font-bold mb-4">Informasi Akun & Aplikasi</h2>
+
+  <div class="space-y-4 max-w-md text-gray-700">
+    <div>
+      <h3 class="font-semibold">Informasi Pengguna</h3>
+      <p><strong>Nama:</strong> {{ user?.name || '-' }}</p>
+      <p><strong>Email:</strong> {{ user?.email || '-' }}</p>
+      <p><strong>Username:</strong> {{ user?.username || '-' }}</p>
+    </div>
+
+    <div>
+      <h3 class="font-semibold mt-6">Informasi Aplikasi</h3>
+      <p>Versi aplikasi: 1.0.0</p>
+      <p>Dikembangkan oleh: BuangYuk</p>
+      <p>Hak Cipta © 2054 My_Tutor</p>
+    </div>
+  </div>
+</template>
+
+
+<template v-else-if="selectedMenu === 'privasi'">
+  <h2 class="text-xl font-bold mb-4">Keamanan dan Privasi</h2>
+
+  <div class="max-w-md space-y-4 text-gray-700">
+    <div>
+      <label class="flex items-center space-x-3">
+        <input type="checkbox" v-model="privacySettings.dataSharing" />
+        <span>Izinkan berbagi data anonim untuk pengembangan aplikasi</span>
+      </label>
+    </div>
+
+    <div>
+      <label class="flex items-center space-x-3">
+        <input type="checkbox" v-model="privacySettings.emailNotifications" />
+        <span>Terima notifikasi email terkait aktivitas akun</span>
+      </label>
+    </div>
+
+    <div>
+      <label class="flex items-center space-x-3">
+        <input type="checkbox" v-model="privacySettings.showProfilePublic" />
+        <span>Tampilkan profil saya secara publik</span>
+      </label>
+    </div>
+
+    <button
+      @click="savePrivacySettings"
+      class="mt-4 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+    >
+      Simpan Pengaturan
+    </button>
+  </div>
+</template>
+
+
+
+       <template v-else-if="selectedMenu === 'tambah-akun'">
+  <h2 class="text-xl font-bold mb-4">Tambahkan Akun</h2>
+
+  <form @submit.prevent="submitNewAccount" class="max-w-md space-y-4 text-gray-700">
+    <div>
+      <label class="block mb-1 font-medium" for="username">Username</label>
+      <input
+        id="username"
+        v-model="newAccount.username"
+        type="text"
+        required
+        class="w-full border border-gray-300 rounded px-3 py-2"
+      />
+    </div>
+
+    <div>
+      <label class="block mb-1 font-medium" for="email">Email</label>
+      <input
+        id="email"
+        v-model="newAccount.email"
+        type="email"
+        required
+        class="w-full border border-gray-300 rounded px-3 py-2"
+      />
+    </div>
+
+    <div>
+      <label class="block mb-1 font-medium" for="password">Password</label>
+      <input
+        id="password"
+        v-model="newAccount.password"
+        type="password"
+        required
+        class="w-full border border-gray-300 rounded px-3 py-2"
+      />
+    </div>
+
+    <button
+      type="submit"
+      class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+    >
+      Tambah Akun
+    </button>
+  </form>
+
+  <p v-if="successMessage" class="mt-4 text-green-600">{{ successMessage }}</p>
+  <p v-if="errorMessage" class="mt-4 text-red-600">{{ errorMessage }}</p>
+</template>
+
+          <template v-else>
+            <p class="text-gray-500 italic">Silakan pilih menu di sebelah kiri.</p>
+          </template>
+
+        </div>
+      </div>
+    </div>
+
+
+
+  </div>
+    <footer class="bg-green-700 text-white text-center py-4">
+      Copyright 2054 My_Tutor | Designed By BuangYuk
+    </footer>
+</template>
+
+
+
+<style>
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css');
+</style>
