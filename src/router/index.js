@@ -11,7 +11,8 @@ const input = () => import ('../views/InputSampah.vue')
 const profil = () => import ('../views/ProfilPage.vue')
 const selected = () => import ('../views/SelectedMenu.vue')
 const dasboard = () => import ('../views/DasboardPage.vue')
-
+const Riwayat = () => import ('../views/RiwayatSampah.vue')
+const BankSampah = () => import ('../views/BankSampah.vue')
 
 const routes = [
 { path: '/Home', component: Home},
@@ -23,12 +24,25 @@ const routes = [
   {path : '/input', component: input},
   {path: '/profil', component:profil},
   {path: '/select', component:selected},
-  {path: '/dasboard', component: dasboard},
+  {path: '/', component: dasboard},
+  {path: '/riwayat', component: Riwayat},
+  {path: '/BankSampah', component: BankSampah},
+
+
 ]
 
 const router = createRouter({
   history: createWebHistory(),
-  routes
+  routes,
+    scrollBehavior(to) {
+    if (to.hash) {
+      return {
+        el: to.hash,
+        behavior: 'smooth',
+      }
+    }
+    return { top: 0 }
+  }
 })
 
 router.beforeEach((to, from, next) => {

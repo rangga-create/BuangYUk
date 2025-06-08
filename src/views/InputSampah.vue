@@ -145,34 +145,72 @@ const triggerAIScan = () => {
 }
 
 const submitForm = () => {
-  if (!validateForm()) return
+  if (!validateForm()) return;
 
-
-  const beratInput = parseFloat(form.value.berat)
+  const beratInput = parseFloat(form.value.berat);
   if (!isNaN(beratInput)) {
-    totalSampah.value += beratInput
-      totalInputHariIni.value += 1
-  kontributorAktif.value += 1
+    totalSampah.value += beratInput;
+    totalInputHariIni.value += 1;
+    kontributorAktif.value += 1;
   }
+
+
+  const riwayatSampah = JSON.parse(localStorage.getItem('riwayatSampah')) || [];
+  const newEntry = {
+    tanggal: new Date().toISOString().split('T')[0],
+    jenis: form.value.jenis,
+    berat: `${form.value.berat} kg`,
+    poin: `${parseFloat(form.value.berat) * 400} poin`, 
+    status: 'Selesai'
+  };
+  riwayatSampah.unshift(newEntry);
+  localStorage.setItem('riwayatSampah', JSON.stringify(riwayatSampah));
 
   console.log('DATA DIKIRIM:', {
     ...form.value,
     estimasiHarga: estimasiHarga.value,
     foto: uploadedFile.value || 'Belum upload'
-  })
+  });
 
-  alert('Form berhasil dikirim!')
+  alert('Form berhasil dikirim!');
+  form.value = { jenis: '', berat: '', lokasi: '' };
+  uploadedFile.value = null;
+  fileInput.value.value = null;
+};
 
 
-  form.value = { jenis: '', berat: '', lokasi: '' }
-  uploadedFile.value = null
-  fileInput.value.value = null
-}
+
+// const submitForm = () => {
+//   if (!validateForm()) return
+
+
+//   const beratInput = parseFloat(form.value.berat)
+//   if (!isNaN(beratInput)) {
+//     totalSampah.value += beratInput
+//       totalInputHariIni.value += 1
+//   kontributorAktif.value += 1
+//   }
+
+//   console.log('DATA DIKIRIM:', {
+//     ...form.value,
+//     estimasiHarga: estimasiHarga.value,
+//     foto: uploadedFile.value || 'Belum upload'
+//   })
+
+//   alert('Form berhasil dikirim!')
+
+
+//   form.value = { jenis: '', berat: '', lokasi: '' }
+//   uploadedFile.value = null
+//   fileInput.value.value = null
+// }
 
 </script>
 
 <template>
   <div class="text-center bg-white">
+
+
     <header class="bg-white text-black">
   <div class="container mx-auto px-6 md:px-32 py-3 flex items-center justify-between">
 
@@ -216,7 +254,7 @@ const submitForm = () => {
 </div>
 
   </div>
-</header>
+    </header>
 
     <nav class="bg-white shadow">
       <div class="container mx-auto px-4">
