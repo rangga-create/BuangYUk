@@ -9,7 +9,6 @@ const edukasi = () => import('../views/EdukasiTips.vue')
 const penukaran = () => import ('../views/PenukaranPoint.vue')
 const input = () => import ('../views/InputSampah.vue')
 const profil = () => import ('../views/ProfilPage.vue')
-const selected = () => import ('../views/SelectedMenu.vue')
 const dasboard = () => import ('../views/DasboardPage.vue')
 const Riwayat = () => import ('../views/RiwayatSampah.vue')
 const BankSampah = () => import ('../views/BankSampah.vue')
@@ -23,7 +22,6 @@ const routes = [
   {path : '/penukaran', component: penukaran},
   {path : '/input', component: input},
   {path: '/profil', component:profil},
-  {path: '/select', component:selected},
   {path: '/', component: dasboard},
   {path: '/riwayat', component: Riwayat},
   {path: '/BankSampah', component: BankSampah},

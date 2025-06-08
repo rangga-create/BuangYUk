@@ -156,7 +156,7 @@ function handleClickOutside(event) {
 
 <template>
   <div class="bg-white min-h-screen flex flex-col">
-    <!-- Header -->
+   
     <header class="bg-white text-black shadow-sm">
       <div class="container mx-auto px-6 md:px-32 py-3 flex items-center justify-between">
         <img src="/src/components/img/Logo.png" alt="Logo" class="w-28 h-8 object-contain" />
@@ -185,7 +185,7 @@ function handleClickOutside(event) {
       </div>
     </header>
 
-    <!-- Navigation -->
+
     <nav class="bg-white shadow">
       <div class="container mx-auto px-4">
         <ul class="flex justify-center items-center space-x-8 py-4 text-sm relative select-none">
@@ -211,12 +211,10 @@ function handleClickOutside(event) {
       </div>
     </nav>
 
-    <!-- Hero -->
     <div class="relative h-52 bg-cover bg-center flex items-center justify-center" style="background-image: url('/src/components/img/baground.png');">
       <h1 class="text-white text-5xl font-bold">Daftar Bank Sampah</h1>
     </div>
 
-    <!-- Form Tambah -->
     <section class="container mx-auto px-6 py-8">
       <h2 class="text-xl font-semibold text-gray-800 mb-4 text-center">Tambah Bank Sampah</h2>
       <form @submit.prevent="addBank" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 bg-gray-50 p-6 rounded-lg shadow-md">
@@ -233,7 +231,7 @@ function handleClickOutside(event) {
       </form>
     </section>
 
-    <!-- Daftar Bank -->
+
     <section class="flex-grow container mx-auto px-6 py-12">
       <h2 class="text-2xl font-bold mb-4 text-center"><span class="text-green-700 italic">Daftar Bank Sampah Mitra BuangYuk</span></h2>
       <p class="mb-24 text-gray-600 text-center">Temukan bank sampah terdekat dari lokasi Anda!</p>
@@ -242,7 +240,7 @@ function handleClickOutside(event) {
       </div>
     </section>
 
-    <!-- Footer -->
+
     <footer class="bg-green-600 text-white text-center py-4 mt-auto">
       <p class="text-sm">&copy; 2054 My_Tutor | Designed By BuangYuk</p>
     </footer>
