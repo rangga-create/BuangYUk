@@ -1,28 +1,51 @@
 <script setup>
 import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { useRouter } from 'vue-router'
 
-
+const router = useRouter()
+const isLoggedIn = ref(false)
 const dropdownOpen = ref(false)
+const user = ref(null)
+const currentPage = ref(1)
+const totalPages = 12
 
 const navItems = ref([
-  { name: 'Dashboard', link: '#', active: false },
+  { name: 'Dashboard', link: '/', active: false },
   { name: 'Home', link: '#', active: false },
-  { name: 'Edukasi & Tips', link: '#', active: false },
+  { name: 'Edukasi & Tips', link: '/edukasi', active: false },
   {
     name: 'Tukar Poin',
-    link: '#',
+    link: '/penukaran',
     active: false,
     hasDropdown: true,
     children: [
-      { name: 'Form Input Sampah', link: '#' },
-      { name: 'Riwayat Sampah', link: '#' },
-      { name: 'Daftar Bank Sampah', link: '#' },
-      { name: 'Eco Challenge Mingguan', link: '#' }
+      { name: 'Form Input Sampah', link: '/input' },
+      { name: 'Riwayat Sampah', link: '/riwayat' },
+      { name: 'Daftar Bank Sampah', link: '/BankSampah' },
+      { name: 'Eco Challenge Mingguan', link: '/EcoChallenge' }
     ]
   }
 ])
 
-const toggleDropdown2 = () => {
+onMounted(() => {
+  const loggedIn = localStorage.getItem('loggedInUser')
+  if (loggedIn) {
+    try {
+      user.value = JSON.parse(loggedIn)
+      isLoggedIn.value = true
+    } catch (e) {
+      console.error('Gagal memuat data user:', e)
+      isLoggedIn.value = false
+    }
+  }
+  document.addEventListener('click', handleClickOutside)
+})
+
+onBeforeUnmount(() => {
+  document.removeEventListener('click', handleClickOutside)
+})
+
+const toggleDropdown = () => {
   dropdownOpen.value = !dropdownOpen.value
 }
 
@@ -39,21 +62,17 @@ const handleClickOutside = (event) => {
   }
 }
 
-onMounted(() => {
-  document.addEventListener('click', handleClickOutside)
-})
-
-onBeforeUnmount(() => {
-  document.removeEventListener('click', handleClickOutside)
-})
-
-const currentPage = ref(1)
-const totalPages = 12
-
 function goToPage(page) {
   if (page >= 1 && page <= totalPages) {
     currentPage.value = page
   }
+}
+
+const goToLogin = () => {
+  router.push('/login')
+}
+const goToRegister = () => {
+  router.push('/register')
 }
 
 const tabs = ref([
@@ -79,97 +98,58 @@ const items = ref([
 
 <template>
   <div class="min-h-screen bg-gray-50">
-
-    <header class="bg-white text-black">
-      <div class="container mx-auto px-32 py-3 flex items-center justify-between">
-        <div class="flex items-center">
-          <img
-            src="/src/components/img/Logo.png"
-            alt="Logo"
-            class="w-28 h-8 mr-3 object-cover"
+    <header class="bg-white text-black shadow-sm">
+      <div class="container mx-auto px-6 md:px-32 py-3 flex items-center justify-between">
+        <img src="/src/components/img/Logo.png" alt="Logo" class="w-28 h-8 object-contain" />
+        <form class="hidden md:flex w-[850px]" @submit.prevent>
+          <input
+            v-model="searchQuery"
+            type="text"
+            placeholder="Masukkan nama Kota/kecamatan"
+            class="w-full py-2 px-4 rounded-l-md text-sm border border-gray-300 focus:ring-2 focus:ring-green-400 focus:outline-none"
           />
+          <button
+            type="submit"
+            class="bg-green-500 hover:bg-green-600 text-white px-4 rounded-r-md transition"
+          >
+            <ion-icon name="search-outline"></ion-icon>
+          </button>
+        </form>
+        <div v-if="isLoggedIn && user" class="flex items-center gap-3">
+          <img :src="user.photo || 'https://images.unsplash.com/photo-1572573309811-48474d1891b7?q=80&w=2564&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'" alt="profil" class="w-10 h-10 rounded-full object-cover border border-gray-300" />
+          <span class="text-sm font-medium text-black truncate max-w-xs">{{ user.name }}</span>
         </div>
-
-        <div class="flex-1 flex justify-center">
-          <form class="w-[850px] flex">
-            <input
-              type="text"
-              placeholder="Masukkan nama Kota/kecamatan"
-              class="w-full py-2 px-4 rounded-l-md text-gray-800 text-sm border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-green-400"
-            />
-            <button
-              type="submit"
-              class="bg-green-500 hover:bg-green-600 text-white px-4 rounded-r-md flex items-center justify-center"
-              aria-label="Search"
-            >
-              <ion-icon name="search-outline"></ion-icon>
-            </button>
-          </form>
-        </div>
-
-        <div class="w-24">
-          <div class="flex items-center">
-            <img
-              src="https://th.bing.com/th/id/OIP.7FsDgas0kcH0W1ajb1rZEgHaHa?rs=1&pid=ImgDetMain"
-              alt="profil"
-              class="w-10 h-10 object-cover"
-            />
-          </div>
+        <div v-else class="flex gap-3">
+          <button @click="goToLogin" class="px-4 py-2 text-sm font-medium text-green-600 border border-green-600 rounded-md hover:bg-green-50 transition duration-200">Login</button>
+          <button @click="goToRegister" class="px-4 py-2 text-sm font-medium text-white bg-green-600 rounded-md hover:bg-green-700 transition duration-200">Daftar</button>
         </div>
       </div>
     </header>
 
-
     <nav class="bg-white shadow">
       <div class="container mx-auto px-4">
-        <ul class="flex justify-center items-center space-x-14 py-4 text-sm relative">
+        <ul class="flex justify-center items-center space-x-8 py-4 text-sm relative select-none">
           <li v-for="(item, index) in navItems" :key="index" class="relative">
-            <div v-if="item.hasDropdown">
-              <button
-                @click="toggleDropdown2"
-                class="dropdown-toggle flex items-center px-3 py-1 rounded hover:text-green-600 font-medium"
-              >
+            <template v-if="item.hasDropdown">
+              <button @click="toggleDropdown" class="dropdown-toggle flex items-center px-3 py-1 font-medium text-gray-800 hover:text-green-600 transition">
                 {{ item.name }}
-                <svg
-                  class="ml-1 w-4 h-4"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M19 9l-7 7-7-7" />
+                <svg class="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                 </svg>
               </button>
-
-              <div
-                v-if="dropdownOpen"
-                class="dropdown-menu absolute left-0 top-full mt-2 flex flex-col bg-white border rounded shadow z-20"
-              >
-                <a
-                  v-for="(child, cIndex) in item.children"
-                  :key="cIndex"
-                  :href="child.link"
-                  class="px-4 py-2 text-sm hover:bg-green-100 whitespace-nowrap"
-                >
+              <div v-if="dropdownOpen" class="dropdown-menu absolute left-0 top-full mt-2 w-48 bg-white border border-gray-200 rounded shadow-lg z-20">
+                <a v-for="(child, cIndex) in item.children" :key="cIndex" :href="child.link" class="block px-4 py-2 text-sm text-gray-700 hover:bg-green-100 whitespace-nowrap">
                   {{ child.name }}
                 </a>
               </div>
-            </div>
-
-            <div v-else>
-              <a
-                :href="item.link"
-                class="px-3 py-1 rounded hover:text-green-600 font-medium"
-              >
-                {{ item.name }}
-              </a>
-            </div>
+            </template>
+            <template v-else>
+              <a :href="item.link" class="px-3 py-1 font-medium text-gray-800 hover:text-green-600 transition">{{ item.name }}</a>
+            </template>
           </li>
         </ul>
       </div>
     </nav>
-
 
     <div class="py-10 relative h-52">
       <div
@@ -178,99 +158,87 @@ const items = ref([
       ></div>
     </div>
 
-
     <div class="container mx-auto px-4 py-6">
       <div class="bg-green-600 text-white rounded-xl p-4 flex items-center justify-between">
         <div>
-          <h2 class="text-4xl mb-4 ml-20  font-bold">Poin Anda Saat Ini: 12.500 Poin</h2>
+          <h2 class="text-4xl mb-4 ml-20 font-bold">Poin Anda Saat Ini: 12.500 Poin</h2>
           <p class="text-sm ml-20 italic">Tukar sekarang sebelum masa berlaku poin habis!</p>
         </div>
-        <img src="/src/components/img/daurUlang.png/" alt="Recycle" class="h-48" />
+        <img src="/src/components/img/daurUlang.png" alt="Recycle" class="h-48" />
       </div>
 
       <h3 class="text-3xl font-bold mb-10 mt-4">Penukaran Poin BuangYuk</h3>
     </div>
 
-
-      <div class="container mx-auto px-4">
-    <div class="flex flex-wrap gap-2 mb-6">
-      <button
-        v-for="tab in tabs"
-        :key="tab.label"
-        class="border rounded-md px-16 py-2 text-sm hover:bg-green-100 flex items-center gap-2"
-      >
-        <ion-icon :name="tab.icon"></ion-icon>
-        {{ tab.label }}
-      </button>
-    </div>
-  </div>
-
-
-<div class="px-4 sm:px-8 py-20 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-20">
-  <div
-    v-for="item in items"
-    :key="item.title"
-    class="bg-white rounded-xl shadow hover:shadow-md transition-shadow overflow-hidden"
-  >
-
-    <div class="h-40  bg-gray-50 flex items-center justify-center">
-      <img :src="item.image" :alt="item.title" class="rounded-md h-full object-contain" />
-    </div>
-
-
-    <div class="p-4">
-      <h4 class="text-center font-medium mb-2">{{ item.title }}</h4>
-      <div class="text-center">
-        <button class="bg-green-600 text-white px-6 py-2 rounded-md text-sm">
-          {{ item.point }} poin
+    <div class="container mx-auto px-4">
+      <div class="flex flex-wrap gap-2 mb-6">
+        <button
+          v-for="tab in tabs"
+          :key="tab.label"
+          class="border rounded-md px-16 py-2 text-sm hover:bg-green-100 flex items-center gap-2"
+        >
+          <ion-icon :name="tab.icon"></ion-icon>
+          {{ tab.label }}
         </button>
       </div>
     </div>
-  </div>
-</div>
 
+    <div class="px-4 sm:px-8 py-20 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-20">
+      <div
+        v-for="item in items"
+        :key="item.title"
+        class="bg-white rounded-xl shadow hover:shadow-md transition-shadow overflow-hidden"
+      >
+        <div class="h-40 bg-gray-50 flex items-center justify-center">
+          <img :src="item.image" :alt="item.title" class="rounded-md h-full object-contain" />
+        </div>
+        <div class="p-4">
+          <h4 class="text-center font-medium mb-2">{{ item.title }}</h4>
+          <div class="text-center">
+            <button class="bg-green-600 text-white px-6 py-2 rounded-md text-sm">
+              {{ item.point }} poin
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
 
+    <div class="flex justify-center mt-6 space-x-2 text-sm">
+      <button
+        @click="goToPage(currentPage - 1)"
+        :disabled="currentPage === 1"
+        class="px-3 py-1 border rounded-full bg-white text-green-600 hover:bg-green-100 disabled:opacity-50 disabled:cursor-not-allowed transition"
+      >
+        <ion-icon name="chevron-back-outline"></ion-icon>
+      </button>
 
-       <div class="flex justify-center mt-6 space-x-2 text-sm">
+      <button
+        v-for="page in totalPages"
+        :key="page"
+        @click="goToPage(page)"
+        :class="[
+          'px-3 py-1 border rounded-full transition',
+          currentPage === page
+            ? 'bg-green-600 text-white font-semibold shadow'
+            : 'bg-white text-green-600 hover:bg-green-100',
+        ]"
+      >
+        {{ page }}
+      </button>
 
-    <button
-      @click="goToPage(currentPage - 1)"
-      :disabled="currentPage === 1"
-      class="px-3 py-1 border rounded-full bg-white text-green-600 hover:bg-green-100 disabled:opacity-50 disabled:cursor-not-allowed transition"
-    >
-      <ion-icon name="chevron-back-outline"></ion-icon>
-    </button>
-
-
-    <button
-      v-for="page in totalPages"
-      :key="page"
-      @click="goToPage(page)"
-      :class="[
-        'px-3 py-1 border rounded-full transition',
-        currentPage === page
-          ? 'bg-green-600 text-white font-semibold shadow'
-          : 'bg-white text-green-600 hover:bg-green-100',
-      ]"
-    >
-      {{ page }}
-    </button>
-
-
-    <button
-      @click="goToPage(currentPage + 1)"
-      :disabled="currentPage === totalPages"
-      class="px-3 py-1 border rounded-full bg-white text-green-600 hover:bg-green-100 disabled:opacity-50 disabled:cursor-not-allowed transition"
-    >
-      <ion-icon name="chevron-forward-outline"></ion-icon>
-    </button>
-  </div>
+      <button
+        @click="goToPage(currentPage + 1)"
+        :disabled="currentPage === totalPages"
+        class="px-3 py-1 border rounded-full bg-white text-green-600 hover:bg-green-100 disabled:opacity-50 disabled:cursor-not-allowed transition"
+      >
+        <ion-icon name="chevron-forward-outline"></ion-icon>
+      </button>
+    </div>
 
     <footer class="bg-green-700 text-white text-center py-4 mt-10">
       Copyright 2054 My_Tutor | Designed By BuangYuk
     </footer>
   </div>
-
 </template>
 
 <style scoped>

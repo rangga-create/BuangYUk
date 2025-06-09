@@ -4,7 +4,7 @@ import{ createRouter, createWebHistory } from 'vue-router'
 const Home = () => import ('../views/HomePage.vue')
 const Login = () => import('../views/LoginPage.vue')
 const About = () => import('../views/RegisterPage.vue')
-// const anime = () => import('../views/AnimeJs.vue')
+const challage = () => import('../views/ChallagePage.vue')
 const edukasi = () => import('../views/EdukasiTips.vue')
 const penukaran = () => import ('../views/PenukaranPoint.vue')
 const input = () => import ('../views/InputSampah.vue')
@@ -13,16 +13,18 @@ const dasboard = () => import ('../views/DasboardPage.vue')
 const Riwayat = () => import ('../views/RiwayatSampah.vue')
 const BankSampah = () => import ('../views/BankSampah.vue')
 
+
 const routes = [
+   {path: '/', component: dasboard},
 { path: '/Home', component: Home},
   { path: '/Login',component: Login },
   { path: '/Register', component: About },
-  // {path: '/anim', component: anime },
+{path: '/EcoChallenge', component: challage },
   {path : '/edukasi', component: edukasi },
   {path : '/penukaran', component: penukaran},
   {path : '/input', component: input},
   {path: '/profil', component:profil},
-  {path: '/', component: dasboard},
+
   {path: '/riwayat', component: Riwayat},
   {path: '/BankSampah', component: BankSampah},
 

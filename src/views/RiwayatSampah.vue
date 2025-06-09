@@ -80,15 +80,18 @@ const navItems = ref([
   { name: 'Home', link: '/home', active: false },
   { name: 'Edukasi & Tips', link: '/edukasi', active: false },
   {
-    name: 'Tukar Poin', link: '#', active: false, hasDropdown: true,
+    name: 'Tukar Poin',
+    link: '/penukaran',
+    active: false,
+    hasDropdown: true,
     children: [
-      { name: 'Form Input Sampah', link: '#' },
-      { name: 'Riwayat Sampah', link: '#' },
-      { name: 'Daftar Bank Sampah', link: '#' },
-      { name: 'Eco Challenge Mingguan', link: '#' }
+      { name: 'Form Input Sampah', link: '/input' },
+      { name: 'Riwayat Sampah', link: '/riwayat' },
+      { name: 'Daftar Bank Sampah', link: '/BankSampah' },
+      { name: 'Eco Challenge Mingguan', link: '/EcoChallenge' }
     ]
   }
-]);
+])
 
 const toggleDropdown = () => {
   dropdownOpen.value = !dropdownOpen.value;
@@ -198,14 +201,30 @@ onBeforeUnmount(() => {
       </div>
     </nav>
 
-    <div class="bg-green-600 text-white py-12 px-4 rounded-b-lg flex flex-col md:flex-row md:items-center justify-between max-w-7xl mx-auto mt-6">
-      <div>
-        <h2 class="text-2xl font-bold">Selamat datang kembali, {{ user?.name || 'Pengguna' }}</h2>
-        <p class="mt-2 flex items-center gap-2 text-sm"><i class="fa fa-map-marker-alt"></i> BS Mandiri Jaya, Bekasi Selatan</p>
-        <p class="flex items-center gap-2 text-sm"><i class="fa fa-calendar"></i> Jumat, 30 Mei 2025</p>
-      </div>
-      <img src="../components/img/poster.png" alt="Recycling" class="w-56 mt-4 md:mt-0" />
-    </div>
+ <div class="bg-[#0A7D68] text-white py-12 px-6 rounded-b-lg flex flex-col md:flex-row md:items-center justify-between max-w-7xl mx-auto mt-6 shadow-md">
+ 
+  <div>
+    <h2 class="text-2xl md:text-3xl font-bold leading-tight">
+      Selamat datang kembali, <span class="text-lime-200">{{ user?.name || 'Pengguna' }}</span>
+    </h2>
+    <p class="mt-3 flex items-center gap-2 text-sm text-lime-100">
+      <i class="fas fa-map-marker-alt text-white"></i>
+      BS Mandiri Jaya, Bekasi Selatan
+    </p>
+    <p class="flex items-center gap-2 text-sm text-lime-100">
+      <i class="fas fa-calendar-alt text-white"></i>
+      Jumat, 30 Mei 2025
+    </p>
+  </div>
+
+
+  <img
+    src="../components/img/poster.png"
+    alt="Recycling"
+    class="w-48 md:w-56 mt-6 md:mt-0 rounded shadow-sm"
+  />
+</div>
+
 
 
     <div class="max-w-7xl mx-auto mt-10 p-12 bg-white rounded-lg shadow">

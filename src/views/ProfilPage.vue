@@ -221,19 +221,19 @@ function selectMenu(menu) {
 }
 
 const navItems = ref([
-  { name: 'Dashboard', link: '#', active: false },
+  { name: 'Dashboard', link: '/', active: false },
   { name: 'Home', link: '#', active: false },
   { name: 'Edukasi & Tips', link: '/edukasi', active: false },
   {
     name: 'Tukar Poin',
-    link: '#',
+    link: '/penukaran',
     active: false,
     hasDropdown: true,
     children: [
-      { name: 'Form Input Sampah', link: '#' },
-      { name: 'Riwayat Sampah', link: '#' },
-      { name: 'Daftar Bank Sampah', link: '#' },
-      { name: 'Eco Challenge Mingguan', link: '#' }
+      { name: 'Form Input Sampah', link: '/input' },
+      { name: 'Riwayat Sampah', link: '/riwayat' },
+      { name: 'Daftar Bank Sampah', link: '/BankSampah' },
+      { name: 'Eco Challenge Mingguan', link: '/EcoChallenge' }
     ]
   }
 ])
@@ -264,7 +264,7 @@ const navItems = ref([
 
         <div v-if="isLoggedIn && user" class="flex items-center gap-2">
           <img
-            :src="user.photo || '/src/components/img/profil.webp'"
+            :src="user.photo || 'https://images.unsplash.com/photo-1572573309811-48474d1891b7?q=80&w=2564&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'"
             alt="profil"
             class="w-10 h-10 rounded-full object-cover"
           />
@@ -353,7 +353,7 @@ const navItems = ref([
 
       <div class="flex-shrink-0">
         <img
-          :src="user?.photo || '/src/components/img/profil.webp'"
+          :src="user?.photo || 'https://images.unsplash.com/photo-1572573309811-48474d1891b7?q=80&w=2564&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'"
           alt="Profile"
           class="rounded-lg w-60 h-auto object-cover"
         />
@@ -385,7 +385,7 @@ const navItems = ref([
                 <label class="block mb-2 font-medium text-gray-700">Foto Profil</label>
                 <div class="flex items-center gap-4">
                   <img
-                    :src="photoPreview || (user?.photo || '/src/components/img/profil.webp')"
+                    :src="photoPreview || (user?.photo || 'https://images.unsplash.com/photo-1572573309811-48474d1891b7?q=80&w=2564&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')"
                     alt="Foto Profil"
                     class="w-24 h-24 rounded-full object-cover border border-gray-300"
                   />

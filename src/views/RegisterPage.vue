@@ -42,13 +42,12 @@ const register = () => {
   localStorage.setItem('users', JSON.stringify(users))
   alert('Registrasi berhasil!')
 
-  // Bersihkan form
   form.name = ''
   form.email = ''
   form.password = ''
   form.confirmPassword = ''
 
-  // Redirect ke halaman login
+
   router.push('/login')
 }
 
@@ -58,19 +57,19 @@ const goToLogin = () => {
 </script>
 
 <template>
-  <div class="min-h-screen flex bg-gradient-to-b from-[#051D19] via-[#051D19] to-[#0A7D68]">
-    <h1 class="absolute text-3xl font-bold text-white left-10 top-8 italic ">BuangYuk 🍃</h1>
+  <div class="min-h-screen flex bg-gradient-to-br from-[#0B3C36] via-[#0A7D68] to-[#B2DFDB]">
+    <h1 class="absolute text-3xl font-bold text-white left-10 top-8 italic "><img src="../components/img/Logo.png" alt=""></h1>
 
     <div class="w-[45%] flex justify-center items-center p-8">
       <div class="max-w-md w-full">
         <div class="mb-6 text-center">
-          <p class="text-[#68AA62] text-[28px]">Bijak Buang Sampah, Selamatkan Masa Depan</p>
+          <p class="text-[#C2EABA] text-[28px]">Bijak Buang Sampah, Selamatkan Masa Depan</p>
         </div>
 
-        <div class="text-white p-8 rounded-lg">
+        <div class="bg-[#0F2F2B]/70 text-white p-8 rounded-lg">
           <h2 class="text-2xl font-semibold mb-6 text-center">Create Account</h2>
 
-          <!-- Form Input -->
+
           <div class="mb-4">
             <label for="name" class="block text-sm font-medium mb-2">Full Name</label>
             <input
@@ -151,34 +150,33 @@ const goToLogin = () => {
           <button
             class="w-full bg-white text-gray-800 py-2 px-4 rounded-md border border-gray-300 hover:bg-gray-50 transition flex items-center justify-center mb-6 font-medium"
           >
-            <svg class="w-5 h-5 mr-2" viewBox="0 0 24 24">
-              <path
-                d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z"
-                fill="#EA4335"
-              />
-            </svg>
+              <ion-icon name="logo-google" class="mr-8 "></ion-icon>
             Continue with Google
           </button>
 
           <div class="text-center text-sm text-white">
             Already have an account?
-            <button @click="goToLogin" class="text-[#68AA62] hover:underline font-medium">
-              Sign In
-            </button>
+       <button
+  @click="goToLogin"
+  class="text-green-300 hover:text-green-200 hover:underline font-semibold transition duration-200"
+>
+  Sign In
+</button>
+
           </div>
         </div>
 
         <div class="flex justify-center space-x-6 text-sm text-white mt-8">
-          <router-link to="/about" class="hover:text-[#0A7D68]">About</router-link>
-          <router-link to="/terms" class="hover:text-[#0A7D68]">Terms & Conditions</router-link>
-          <router-link to="/privacy" class="hover:text-[#0A7D68]">Privacy Policy</router-link>
+          <router-link to="/about" class="hover:text-green-300">About</router-link>
+          <router-link to="/terms" class="hover:text-green-300">Terms & Conditions</router-link>
+          <router-link to="/privacy" class="hover:text-green-300">Privacy Policy</router-link>
         </div>
       </div>
     </div>
 
     <div class="w-[55%] bg-green-100 flex items-center justify-center">
       <img
-        src="https://i.pinimg.com/736x/f5/0a/0f/f50a0fa0e97e68b634a6d11e1ede09eb.jpg"
+        src="https://plus.unsplash.com/premium_photo-1737180621224-bdddbe8df9a2?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8ZGF1ciUyMHVsYW5nfGVufDB8fDB8fHww"
         alt="Waste Management"
         class="object-cover w-full h-[1000px]"
       />

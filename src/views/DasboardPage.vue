@@ -115,14 +115,14 @@ const handlePelajariClick = () => {
         <nav class="hidden md:flex space-x-10 font-medium text-sm">
           <router-link to="/home" class="hover:text-green-600">Beranda</router-link>
           <router-link to="/edukasi" class="hover:text-green-600">Edukasi</router-link>
-          <router-link to="/dasboard" class="hover:text-green-600">Dashboard</router-link>
+          <router-link to="/" class="hover:text-green-600">Dashboard</router-link>
           <router-link to="#tentang-kami" hash="#tentang-kami" class="hover:text-green-600">Tentang Kami</router-link>
         </nav>
 <div class="flex gap-2 items-center">
 
   <template v-if="isLoggedIn && user">
     <img
-      :src="user.photo || '/src/components/img/profil.webp'"
+      :src="user.photo || 'https://images.unsplash.com/photo-1572573309811-48474d1891b7?q=80&w=2564&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'"
       alt="profil"
       class="w-10 h-10 rounded-full object-cover"
     />
@@ -165,7 +165,7 @@ const handlePelajariClick = () => {
       <div class="mt-6 flex items-center justify-center px-4 md:px-0">
         <div class="flex flex-col md:flex-row items-center justify-center gap-8 text-center md:text-left py-8">
           <div class="md:w-1/2">
-            <h1 class="text-3xl font-bold text-green-900 leading-snug">
+            <h1 class="text-4xl font-bold text-green-900 leading-snug">
               Ubah Sampah <br />
               Jadi <span class="text-green-600">Rupiah</span>
             </h1>

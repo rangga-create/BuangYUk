@@ -1,13 +1,13 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 
-// Simulasi loading selesai dalam 3 detik
+
 const isLoading = ref(true)
 
 onMounted(() => {
   setTimeout(() => {
     isLoading.value = false
-  }, 3000) // durasi loading
+  }, 3000)
 })
 </script>
 
@@ -25,7 +25,7 @@ onMounted(() => {
 
   <div v-else class="content">
     <h1 class="italic" >BuangYuk 🍃</h1>
-         
+
   </div>
 </template>
 

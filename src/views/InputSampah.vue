@@ -19,19 +19,19 @@ const errors = ref({})
 
 const navItems = ref([
 
-  { name: 'Dashboard', link: '#', active: false },
-  { name: 'Home', link: '#', active: false },
+  { name: 'Dashboard', link: '/', active: false },
+  { name: 'Home', link: '/home', active: false },
   { name: 'Edukasi & Tips', link: '/edukasi', active: false },
   {
     name: 'Tukar Poin',
-    link: '#',
+    link: '/penukaran',
     active: false,
     hasDropdown: true,
     children: [
-      { name: 'Form Input Sampah', link: '#' },
-      { name: 'Riwayat Sampah', link: '#' },
-      { name: 'Daftar Bank Sampah', link: '#' },
-      { name: 'Eco Challenge Mingguan', link: '#' }
+      { name: 'Form Input Sampah', link: '/input' },
+      { name: 'Riwayat Sampah', link: '/riwayat' },
+      { name: 'Daftar Bank Sampah', link: '/BankSampah' },
+      { name: 'Eco Challenge Mingguan', link: '/EcoChallenge' }
     ]
   }
 ])
@@ -160,7 +160,7 @@ const submitForm = () => {
     tanggal: new Date().toISOString().split('T')[0],
     jenis: form.value.jenis,
     berat: `${form.value.berat} kg`,
-    poin: `${parseFloat(form.value.berat) * 400} poin`, 
+    poin: `${parseFloat(form.value.berat) * 400} poin`,
     status: 'Selesai'
   };
   riwayatSampah.unshift(newEntry);
@@ -180,30 +180,7 @@ const submitForm = () => {
 
 
 
-// const submitForm = () => {
-//   if (!validateForm()) return
 
-
-//   const beratInput = parseFloat(form.value.berat)
-//   if (!isNaN(beratInput)) {
-//     totalSampah.value += beratInput
-//       totalInputHariIni.value += 1
-//   kontributorAktif.value += 1
-//   }
-
-//   console.log('DATA DIKIRIM:', {
-//     ...form.value,
-//     estimasiHarga: estimasiHarga.value,
-//     foto: uploadedFile.value || 'Belum upload'
-//   })
-
-//   alert('Form berhasil dikirim!')
-
-
-//   form.value = { jenis: '', berat: '', lokasi: '' }
-//   uploadedFile.value = null
-//   fileInput.value.value = null
-// }
 
 </script>
 
@@ -233,7 +210,7 @@ const submitForm = () => {
 
 
     <div v-if="isLoggedIn && user" class="flex items-center gap-2">
-      <img :src="user.photo || '/src/components/img/profil.webp'" alt="profil" class="w-10 h-10 rounded-full object-cover" />
+      <img :src="user.photo || 'https://images.unsplash.com/photo-1572573309811-48474d1891b7?q=80&w=2564&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'" alt="profil" class="w-10 h-10 rounded-full object-cover" />
       <span class="text-sm text-black font-medium">{{ user.name }}</span>
     </div>
 
@@ -404,18 +381,20 @@ const submitForm = () => {
           <button type="button" class="border border-gray-400 text-gray-700 px-8 py-2 rounded">
             <ion-icon name="save-outline"></ion-icon> Simpan Draft
           </button>
-          <button
-            type="submit"
-            class="bg-green-600 text-white px-50 py-2 rounded hover:bg-green-700"
-          >
-            <ion-icon name="send-outline" class="mr-8"></ion-icon> Submit & dapatkan Poin
-          </button>
+       <button
+  type="submit"
+  class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-50 py-2 rounded-full flex items-center gap-2 shadow-sm transition duration-200"
+>
+  <ion-icon name="send-outline" class="text-lg"></ion-icon>
+  Submit & Dapatkan Poin
+</button>
+
         </div>
       </form>
     </div>
 
 
-    <footer class="bg-green-700 text-white text-center py-4 mt-10">
+    <footer class="bg-[#43A55D] text-white text-center py-4 mt-10">
       Copyright 2054 My_Tutor | Designed By BuangYuk
     </footer>
   </div>

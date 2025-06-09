@@ -105,19 +105,19 @@ onBeforeUnmount(() => {
 })
 
 const navItems = ref([
-  { name: 'Dashboard', link: '#', active: false },
-  { name: 'Home', link: '#', active: false },
+  { name: 'Dashboard', link: '/', active: false },
+  { name: 'Home', link: '/Home', active: false },
   { name: 'Edukasi & Tips', link: '/edukasi', active: false },
   {
     name: 'Tukar Poin',
-    link: '#',
+    link: '/penukaran',
     active: false,
     hasDropdown: true,
     children: [
-      { name: 'Form Input Sampah', link: '#' },
-      { name: 'Riwayat Sampah', link: '#' },
-      { name: 'Daftar Bank Sampah', link: '#' },
-      { name: 'Eco Challenge Mingguan', link: '#' }
+      { name: 'Form Input Sampah', link: '/input' },
+      { name: 'Riwayat Sampah', link: '/riwayat' },
+      { name: 'Daftar Bank Sampah', link: '/BankSampah' },
+      { name: 'Eco Challenge Mingguan', link: '/EcoChallenge' }
     ]
   }
 ])
@@ -156,7 +156,7 @@ function handleClickOutside(event) {
 
 <template>
   <div class="bg-white min-h-screen flex flex-col">
-   
+
     <header class="bg-white text-black shadow-sm">
       <div class="container mx-auto px-6 md:px-32 py-3 flex items-center justify-between">
         <img src="/src/components/img/Logo.png" alt="Logo" class="w-28 h-8 object-contain" />
@@ -169,18 +169,18 @@ function handleClickOutside(event) {
           />
           <button
             type="submit"
-            class="bg-green-500 hover:bg-green-600 text-white px-4 rounded-r-md transition"
+            class="bg-green-500 hover:bg-[#43A55D] text-white px-4 rounded-r-md transition"
           >
             <ion-icon name="search-outline"></ion-icon>
           </button>
         </form>
         <div v-if="isLoggedIn && user" class="flex items-center gap-3">
-          <img :src="user.photo || '/src/components/img/profil.webp'" alt="profil" class="w-10 h-10 rounded-full object-cover border border-gray-300" />
+          <img :src="user.photo || 'https://images.unsplash.com/photo-1572573309811-48474d1891b7?q=80&w=2564&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'" alt="profil" class="w-10 h-10 rounded-full object-cover border border-gray-300" />
           <span class="text-sm font-medium text-black truncate max-w-xs">{{ user.name }}</span>
         </div>
         <div v-else class="flex gap-3">
           <button @click="goToLogin" class="px-4 py-2 text-sm font-medium text-green-600 border border-green-600 rounded-md hover:bg-green-50 transition duration-200">Login</button>
-          <button @click="goToRegister" class="px-4 py-2 text-sm font-medium text-white bg-green-600 rounded-md hover:bg-green-700 transition duration-200">Daftar</button>
+          <button @click="goToRegister" class="px-4 py-2 text-sm font-medium text-white bg-[#43A55D] rounded-md hover:bg-green-700 transition duration-200">Daftar</button>
         </div>
       </div>
     </header>
@@ -225,7 +225,7 @@ function handleClickOutside(event) {
         <div v-if="newBank.image" class="col-span-full">
           <img :src="newBank.image" alt="Preview Gambar" class="h-32 object-cover rounded border" />
         </div>
-        <button type="submit" class="bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-md transition col-span-full">
+        <button type="submit" class="bg-[#43A55D] hover:bg-green-700 text-white font-medium py-2 px-4 rounded-md transition col-span-full">
           Tambah Bank Sampah
         </button>
       </form>
@@ -241,7 +241,7 @@ function handleClickOutside(event) {
     </section>
 
 
-    <footer class="bg-green-600 text-white text-center py-4 mt-auto">
+    <footer class="bg-[#43A55D] text-white text-center py-4 mt-auto">
       <p class="text-sm">&copy; 2054 My_Tutor | Designed By BuangYuk</p>
     </footer>
   </div>
