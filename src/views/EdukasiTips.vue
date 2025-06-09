@@ -94,7 +94,7 @@ const sampahList = [
 
     <header class="bg-white text-black shadow-sm">
       <div class="container mx-auto px-6 md:px-32 py-3 flex items-center justify-between">
-        <img src="/src/components/img/Logo.png" alt="Logo" class="w-28 h-8 object-contain" />
+        <img src="/public/img/Logo.png" alt="Logo" class="w-28 h-8 object-contain" />
         <form class="hidden md:flex w-[850px]" @submit.prevent>
           <input
             v-model="searchQuery"
@@ -152,7 +152,7 @@ const sampahList = [
     </nav>
 
 
-    <div class="relative h-52 bg-cover bg-center flex items-center justify-center" style="background-image: url('/src/components/img/baground.png');">
+    <div class="relative h-52 bg-cover bg-center flex items-center justify-center" style="background-image: url('/public/img/baground.png');">
       <h1 class="text-white text-5xl font-bold">Edukasi & Tips</h1>
     </div>
 

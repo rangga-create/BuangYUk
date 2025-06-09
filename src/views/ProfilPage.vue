@@ -317,7 +317,7 @@ const navItems = ref([
 
     <header class="bg-white text-black">
       <div class="container mx-auto px-6 md:px-32 py-3 flex items-center justify-between">
-        <img src="../components/img/Logo.png" alt="Logo" class="w-28 h-8 object-cover" />
+        <img src="/public/img/Logo.png" alt="Logo" class="w-28 h-8 object-cover" />
 
         <form class="hidden md:flex w-[850px]">
           <input
@@ -413,11 +413,20 @@ const navItems = ref([
     </nav>
 
 
-    <div class="bg-green-200 py-10">
-      <div class="text-center">
-        <h1 class="text-3xl font-bold text-white">Profil</h1>
-      </div>
-    </div>
+<section
+  class="bg-cover bg-center bg-no-repeat py-24 px-4 flex flex-col items-center justify-center text-center"
+  style="background-image: url('/public/img/baground.png');"
+>
+
+
+
+  <div class="relative z-10 max-w-3xl">
+    <h1 class="text-4xl font-bold text-white mb-4">Profil</h1>
+    <p class="text-white text-lg">Kelola data profil kamu dengan mudah di sini.</p>
+  </div>
+</section>
+
+
 
 
     <div class="container mx-auto mt-10 px-6 flex flex-col lg:flex-row gap-6">

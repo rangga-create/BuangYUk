@@ -101,7 +101,7 @@ const items = ref([
   <div class="min-h-screen bg-gray-50">
     <header class="bg-white text-black shadow-sm">
       <div class="container mx-auto px-6 md:px-32 py-3 flex items-center justify-between">
-        <img src="/src/components/img/Logo.png" alt="Logo" class="w-28 h-8 object-contain" />
+        <img src="/public/img/Logo.png" alt="Logo" class="w-28 h-8 object-contain" />
         <form class="hidden md:flex w-[850px]" @submit.prevent>
           <input
             v-model="searchQuery"
@@ -162,18 +162,19 @@ const items = ref([
     <div class="py-10 relative h-52">
       <div
         class="absolute inset-0 h-52 bg-cover bg-center"
-        style="background-image: url('/src/components/img/penukaran.png');"
+        style="background-image: url('/public/img/baground.png');"
       ></div>
     </div>
 
     <div class="container mx-auto px-4 py-6">
-      <div class="bg-green-600 text-white rounded-xl p-4 flex items-center justify-between">
-        <div>
-          <h2 class="text-4xl mb-4 ml-20 font-bold">Poin Anda Saat Ini: 12.500 Poin</h2>
-          <p class="text-sm ml-20 italic">Tukar sekarang sebelum masa berlaku poin habis!</p>
-        </div>
-        <img src="/src/components/img/daurUlang.png" alt="Recycle" class="h-48" />
-      </div>
+   <div class="bg-[#0A7D68] text-white py-12 px-6 rounded-b-lg flex flex-col md:flex-row md:items-center justify-between max-w-7xl mx-auto mt-6 shadow-md">
+  <div>
+    <h2 class="text-4xl mb-4 ml-20 font-bold">Poin Anda Saat Ini: 12.500 Poin</h2>
+    <p class="text-sm ml-20 italic">Tukar sekarang sebelum masa berlaku poin habis!</p>
+  </div>
+  <img src="/public/img/daurUlang.png" alt="Recycle" class="h-48" />
+</div>
+
 
       <h3 class="text-3xl font-bold mb-10 mt-4">Penukaran Poin BuangYuk</h3>
     </div>

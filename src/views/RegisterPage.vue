@@ -58,7 +58,7 @@ const goToLogin = () => {
 
 <template>
   <div class="min-h-screen flex bg-gradient-to-br from-[#0B3C36] via-[#0A7D68] to-[#B2DFDB]">
-    <h1 class="absolute text-3xl font-bold text-white left-10 top-8 italic "><img src="../components/img/Logo.png" alt=""></h1>
+    <h1 class="absolute text-3xl font-bold text-white left-10 top-8 italic "><img src="/public/img/Logo.png" alt=""></h1>
 
     <div class="w-[45%] flex justify-center items-center p-8">
       <div class="max-w-md w-full">

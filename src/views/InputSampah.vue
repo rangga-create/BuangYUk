@@ -192,7 +192,7 @@ const submitForm = () => {
     <header class="bg-white text-black">
   <div class="container mx-auto px-6 md:px-32 py-3 flex items-center justify-between">
 
-    <img src="/src/components/img/Logo.png" alt="Logo" class="w-28 h-8 object-cover" />
+    <img src="/public/img/Logo.png" alt="Logo" class="w-28 h-8 object-cover" />
 
 
     <form class="hidden md:flex w-[850px]">
@@ -281,7 +281,7 @@ const submitForm = () => {
 
     <section
       class="bg-cover bg-center bg-no-repeat py-16 px-4"
-      style="background-image: url('/src/components/img/baground.png');"
+      style="background-image: url('/public/img/baground.png');"
     >
       <h1 class="text-3xl font-bold text-white">Input Sampah</h1>
       <p class="text-white mt-2">Bantu lingkungan dengan mencatat sampah yang kamu kelola!</p>

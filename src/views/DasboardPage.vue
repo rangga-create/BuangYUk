@@ -3,12 +3,8 @@ import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 
 
-import Logo from '../components/img/Logo.png'
-import Poster from '../components/img/poster.png'
-import Pengelolaan from '../components/img/pengelolaan.png'
-import UMKM from '../components/img/umkm.png'
-import Edukasi2 from '../components/img/edukasi2.png'
-import Ilustrasi from '../components/img/Ilustrasi.png'
+
+
 
 import GambarDasboard from '../components/GambarDasboard.vue'
 import JenisSampah from '../components/JenisSampah.vue'
@@ -108,7 +104,7 @@ const handlePelajariClick = () => {
     <header class="bg-green-100 py-4 px-4 md:px-8">
       <div class="flex justify-between items-center">
         <div class="flex items-center gap-2">
-          <img :src="Logo" alt="Logo" class="h-8" />
+          <img src="/public/img/Logo.png" alt="Logo" class="h-8" />
         </div>
 
 
@@ -185,7 +181,7 @@ const handlePelajariClick = () => {
           </div>
 
           <div class="md:w-1/2">
-            <img :src="Poster" alt="poster" class="w-64 md:w-80 mx-auto md:mx-0" />
+            <img src="/public/img/poster.png" alt="poster" class="w-64 md:w-80 mx-auto md:mx-0" />
           </div>
         </div>
       </div>
@@ -198,19 +194,19 @@ const handlePelajariClick = () => {
         <GambarDasboard
           title="Pengelolaan Sampah yang Mudah"
           text="Kami bantu Anda menemukan cara yang tepat untuk mengelola sampah Anda."
-          :img="Pengelolaan"
+          img="/public/img/pengelolaan.png"
           :reverse="false"
         />
         <GambarDasboard
           title="Dukungan UMKM Kreatif"
           text="Jual beli sampah untuk kreasi industri berkolaborasi dengan UMKM untuk mengolahnya."
-          :img="UMKM"
+          img="/public/img/umkm.png"
           :reverse="true"
         />
         <GambarDasboard
           title="Edukasi untuk Masa Depan Bersih"
           text="Informasi penting tentang pemilahan dan daur ulang."
-          :img="Edukasi2"
+          img="/public/img/edukasi2.png"
           :reverse="false"
         />
       </div>
@@ -281,7 +277,7 @@ const handlePelajariClick = () => {
 
         <div class="md:w-1/2">
           <img
-            :src="Ilustrasi"
+            src="/public/img/Ilustrasi.png"
             alt="Ilustrasi Pemilahan Sampah"
             class="border-miring w-full h-[350px] max-w-md mx-auto rounded-2xl border border-green-200 shadow-lg object-cover"
           />
@@ -332,7 +328,7 @@ const handlePelajariClick = () => {
     <footer id="tentang-kami" class="bg-green-900 text-white py-10 px-4 md:px-12">
       <div class="grid md:grid-cols-4 gap-24 text-sm mb-6">
         <div>
-          <img :src="Logo" alt="Logo BangSampah" class="mb-8" />
+          <img src="/public/img/Logo.png" alt="Logo BangSampah" class="mb-8" />
           <p>Telepon: +62-819-2046-7690</p>
           <p>Email: info@bangsampah.com</p>
         </div>

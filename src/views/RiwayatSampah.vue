@@ -146,7 +146,7 @@ onBeforeUnmount(() => {
 
     <header class="bg-white text-black shadow-sm">
       <div class="container mx-auto px-6 md:px-32 py-3 flex items-center justify-between">
-        <img src="/src/components/img/Logo.png" alt="Logo" class="w-28 h-8 object-cover" />
+        <img src="/public/img/Logo.png" alt="Logo" class="w-28 h-8 object-cover" />
 
 
         <form class="hidden md:flex w-[850px]">
@@ -227,7 +227,7 @@ onBeforeUnmount(() => {
 
 
   <img
-    src="../components/img/poster.png"
+    src="/public/img/poster.png"
     alt="Recycling"
     class="w-48 md:w-56 mt-6 md:mt-0 rounded shadow-sm"
   />

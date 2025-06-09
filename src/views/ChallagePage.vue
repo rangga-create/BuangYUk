@@ -145,7 +145,7 @@ function shareChallenge() {
   <div class="min-h-screen bg-gray-50 font-sans text-gray-900">
     <header class="bg-white text-black shadow-sm">
       <div class="container mx-auto px-6 md:px-32 py-3 flex items-center justify-between">
-        <img src="/src/components/img/Logo.png" alt="Logo" class="w-28 h-8 object-contain" />
+        <img src="/public/img/Logo.png" alt="Logo" class="w-28 h-8 object-contain" />
         <form class="hidden md:flex w-[850px]" @submit.prevent>
           <input
             v-model="searchQuery"
@@ -231,7 +231,7 @@ function shareChallenge() {
 
  <section
   class="relative h-52 bg-cover bg-center flex flex-col items-center justify-center text-white"
-  :style="{ backgroundImage: `url('/src/components/img/baground.png')` }"
+  :style="{ backgroundImage: `url('/public/img/baground.png')` }"
 >
   <h1 class="text-3xl md:text-5xl font-bold drop-shadow-md">
     Eco Challenge Mingguan
