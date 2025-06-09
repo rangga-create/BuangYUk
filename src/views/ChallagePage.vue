@@ -53,6 +53,7 @@ const navItems = ref([
       { name: 'Riwayat Sampah', link: '/riwayat' },
       { name: 'Daftar Bank Sampah', link: '/bank-sampah' },
       { name: 'Eco Challenge Mingguan', link: '/EcoChallenge' },
+        {name:'penukaran point',link:'/penukaran'}
     ],
   },
 ]);
@@ -160,13 +161,16 @@ function shareChallenge() {
           </button>
         </form>
         <div v-if="isLoggedIn && user" class="flex items-center gap-3">
-          <img
-            :src="user.photo || 'https://images.unsplash.com/photo-1572573309811-48474d1891b7?q=80'"
-            alt="profil"
-            class="w-10 h-10 rounded-full object-cover border border-gray-300"
-          />
-          <span class="text-sm font-medium text-black truncate max-w-xs">{{ user.name }}</span>
-        </div>
+  <router-link to="/profil">
+    <img
+      :src="user.photo || 'https://images.unsplash.com/photo-1572573309811-48474d1891b7?q=80&w=2564&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'"
+      alt="profil"
+      class="w-10 h-10 rounded-full object-cover border border-gray-300"
+    />
+  </router-link>
+  <span class="text-sm font-medium text-black truncate max-w-xs">{{ user.name }}</span>
+</div>
+
         <div v-else class="flex gap-3">
           <button
             @click="goToLogin"

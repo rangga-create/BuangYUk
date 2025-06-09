@@ -98,7 +98,7 @@ const handlePelajariClick = () => {
     return
   }
 
-  navigateTo('/home')
+  navigateTo('/edukasi')
 }
 </script>
 
@@ -120,13 +120,15 @@ const handlePelajariClick = () => {
         </nav>
 <div class="flex gap-2 items-center">
 
-  <template v-if="isLoggedIn && user">
+ <template v-if="isLoggedIn && user">
+  <div class="flex items-center space-x-3">
     <img
+      @click="navigateTo('/profil')"
       :src="user.photo || 'https://images.unsplash.com/photo-1572573309811-48474d1891b7?q=80&w=2564&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'"
       alt="profil"
-      class="w-10 h-10 rounded-full object-cover"
+      class="w-10 h-10 rounded-full object-cover cursor-pointer"
     />
-    <span class="text-sm text-black font-medium">{{ user.name }}</span>
+    <span class="text-sm cursor-pointer text-black font-medium" @click="navigateTo('/profil')">{{ user.name }}</span>
     <button
       @click="() => {
         localStorage.removeItem('loggedInUser')
@@ -138,7 +140,9 @@ const handlePelajariClick = () => {
     >
       Keluar
     </button>
-  </template>
+  </div>
+</template>
+
 
 
   <template v-else>
@@ -213,7 +217,7 @@ const handlePelajariClick = () => {
     </section>
 
 
-    <section class="bg-gray-50 py-16 px-4 md:px-12 mb-12">
+    <section class="bg-gray-50 py-16 px-4 md:px-12 ">
       <h2 class="text-2xl font-bold text-center mb-14">Bagaimana Cara Kerja Bang Sampah?</h2>
 
       <ol class="relative max-w-3xl mx-auto">

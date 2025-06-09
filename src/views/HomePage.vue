@@ -77,7 +77,7 @@ function navigateTo(path) {
             dampak nyata dari daur ulang terhadap bumi kita.
           </p>
           <button
-            @click="navigateTo('/Login')"
+            @click="navigateTo('/')"
             class="bg-emerald-400 hover:bg-emerald-500 text-white py-3 px-8 rounded-full shadow-md transition duration-300 ease-in-out transform hover:scale-105"
           >
             Learn More

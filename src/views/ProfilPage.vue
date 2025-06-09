@@ -233,7 +233,8 @@ const navItems = ref([
       { name: 'Form Input Sampah', link: '/input' },
       { name: 'Riwayat Sampah', link: '/riwayat' },
       { name: 'Daftar Bank Sampah', link: '/BankSampah' },
-      { name: 'Eco Challenge Mingguan', link: '/EcoChallenge' }
+      { name: 'Eco Challenge Mingguan', link: '/EcoChallenge' },
+      {name:'penukaran point',link:'/penukaran'}
     ]
   }
 ])
