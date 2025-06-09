@@ -2,6 +2,7 @@
 import { ref, onMounted, onBeforeUnmount,watch,reactive } from 'vue'
 import { useRouter } from 'vue-router'
 import ProfileItem from '../components/ProfilPage.vue'
+import { useI18n } from 'vue-i18n'
 
 const router = useRouter()
 const user = ref(null)
@@ -14,7 +15,42 @@ const confirmPassword = ref('')
 const message = ref('')
 const successMessage = ref('')
 const errorMessage = ref('')
+const { locale } = useI18n()
+const selectedUser = ref(null)
+const accounts = ref([])
 
+onMounted(() => {
+
+  const savedAccounts = localStorage.getItem('accounts')
+  accounts.value = savedAccounts ? JSON.parse(savedAccounts) : []
+
+
+  const loggedIn = localStorage.getItem('loggedInUser')
+  if (loggedIn) {
+    user.value = JSON.parse(loggedIn)
+    isLoggedIn.value = true
+  }
+})
+
+
+function selectAccount(account) {
+  selectedUser.value = account
+  user.value = account
+  isLoggedIn.value = true
+  localStorage.setItem('loggedInUser', JSON.stringify(account))
+  successMessage.value = `Berhasil memilih akun: ${account.username}`
+}
+
+watch(user, (newUser) => {
+  email.value = newUser?.email || ''
+}, { immediate: true })
+
+
+
+function changeLanguage() {
+  locale.value = selectedLanguage.value
+  localStorage.setItem('language', selectedLanguage.value)
+}
 const form = ref({
   name: '',
   email: '',
@@ -26,10 +62,22 @@ const form = ref({
 const newAccount = reactive({
   username: '',
   email: '',
-  password: ''
+  password: '',
+    photoPreview: null,
 })
 
+function handlePhotoChangeForNewAccount(event) {
+  const file = event.target.files[0]
+  if (!file) return
 
+  newAccount.photo = file
+
+  const reader = new FileReader()
+  reader.onload = e => {
+    newAccount.photoPreview = e.target.result
+  }
+  reader.readAsDataURL(file)
+}
 
 function submitNewAccount() {
   successMessage.value = ''
@@ -38,6 +86,13 @@ function submitNewAccount() {
 
   if (!newAccount.username || !newAccount.email || !newAccount.password) {
     errorMessage.value = 'Semua field harus diisi.'
+    return
+  }
+
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  if (!emailRegex.test(newAccount.email)) {
+    errorMessage.value = 'Format email tidak valid.'
     return
   }
 
@@ -54,6 +109,8 @@ function submitNewAccount() {
   }
 
   accounts.push({ ...newAccount })
+
+
   localStorage.setItem('accounts', JSON.stringify(accounts))
 
   successMessage.value = 'Akun berhasil ditambahkan!'
@@ -62,7 +119,12 @@ function submitNewAccount() {
   newAccount.username = ''
   newAccount.email = ''
   newAccount.password = ''
+  newAccount.name = ''
+  newAccount.phone = ''
+  newAccount.photo = null
+  newAccount.photoPreview = null
 }
+
 
 const privacySettings = reactive({
   dataSharing: false,
@@ -83,16 +145,20 @@ onMounted(() => {
   }
 })
 
+
 function updateAccount() {
   if (newPassword.value && newPassword.value !== confirmPassword.value) {
     message.value = 'Password konfirmasi tidak cocok!'
     return
   }
 
-
-  user.value.email = email.value
-  localStorage.setItem('loggedInUser', JSON.stringify(user.value))
-
+  if (user.value) {
+    if (newPassword.value) {
+      user.value.password = newPassword.value
+    }
+    user.value.email = email.value
+    localStorage.setItem('loggedInUser', JSON.stringify(user.value))
+  }
 
   newPassword.value = ''
   confirmPassword.value = ''
@@ -148,13 +214,17 @@ function submitForm() {
     return
   }
 
-
   user.value.name = form.value.name
   user.value.email = form.value.email
   user.value.phone = form.value.phone
 
-  alert('Profil berhasil diperbarui!')
+  if (photoPreview.value) {
+    user.value.photo = photoPreview.value
+  }
 
+  localStorage.setItem('loggedInUser', JSON.stringify(user.value))
+
+  alert('Profil berhasil diperbarui!')
 
   photoPreview.value = null
 }
@@ -440,9 +510,9 @@ const navItems = ref([
             </form>
           </template>
 
-       <template v-else-if="selectedMenu === 'bahasa'">
-  <h2 class="text-xl font-bold mb-4">Pengaturan Bahasa</h2>
-  <p>Pilih bahasa yang kamu inginkan:</p>
+<template v-else-if="selectedMenu === 'bahasa'">
+  <h2 class="text-xl font-bold mb-4">{{ $t('language_settings') }}</h2>
+  <p>{{ $t('choose_language') }}</p>
   <ul class="mt-4 space-y-2">
     <li v-for="lang in languages" :key="lang.code">
       <label class="flex items-center gap-2 cursor-pointer">
@@ -451,34 +521,35 @@ const navItems = ref([
           :value="lang.code"
           v-model="selectedLanguage"
           class="form-radio text-green-600"
+          @change="changeLanguage"
         />
         <span>{{ lang.label }}</span>
       </label>
     </li>
   </ul>
   <p class="mt-4 text-green-600 font-semibold">
-    Bahasa saat ini: {{ languages.find(l => l.code === selectedLanguage)?.label }}
+    {{ $t('current_language') }}: {{ languages.find(l => l.code === selectedLanguage)?.label }}
   </p>
 </template>
 
 
 
        <template v-else-if="selectedMenu === 'lokasi'">
-  <h2 class="text-xl font-bold mb-4">Pengaturan Lokasi</h2>
-  <p>Pilih lokasi kamu:</p>
+  <h2 class="text-xl font-bold mb-4">      {{ $t('locationTitle') }}</h2>
+  <p>      {{ $t('chooseLocation') }}</p>
 
   <select
     v-model="selectedLocation"
     class="mt-2 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
   >
-    <option disabled value="">-- Pilih lokasi --</option>
+    <option disabled value="">{{ $t('settings.selectPlaceholder') }}</option>
     <option v-for="loc in locations" :key="loc.code" :value="loc.code">
       {{ loc.label }}
     </option>
   </select>
 
   <p class="mt-4 text-green-600 font-semibold" v-if="selectedLocation">
-    Lokasi saat ini: {{ locations.find(l => l.code === selectedLocation)?.label }}
+      {{ $t('currentLocation') }}: {{ locations.find(l => l.code === selectedLocation)?.label }}
   </p>
 </template>
 
@@ -589,10 +660,28 @@ const navItems = ref([
 
 
 
-       <template v-else-if="selectedMenu === 'tambah-akun'">
+<template v-else-if="selectedMenu === 'tambah-akun'">
   <h2 class="text-xl font-bold mb-4">Tambahkan Akun</h2>
 
   <form @submit.prevent="submitNewAccount" class="max-w-md space-y-4 text-gray-700">
+
+        <div>
+      <label class="block mb-1 font-medium" for="photo">Foto Profil</label>
+      <input
+        id="photo"
+        type="file"
+        @change="handlePhotoChangeForNewAccount"
+        accept="image/*"
+        class="w-full"
+      />
+      <img
+        v-if="newAccount.photoPreview"
+        :src="newAccount.photoPreview"
+        alt="Preview Foto"
+        class="mt-2 w-24 h-24 object-cover rounded-full"
+      />
+    </div>
+
     <div>
       <label class="block mb-1 font-medium" for="username">Username</label>
       <input
@@ -626,6 +715,10 @@ const navItems = ref([
       />
     </div>
 
+
+
+
+
     <button
       type="submit"
       class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
@@ -636,7 +729,36 @@ const navItems = ref([
 
   <p v-if="successMessage" class="mt-4 text-green-600">{{ successMessage }}</p>
   <p v-if="errorMessage" class="mt-4 text-red-600">{{ errorMessage }}</p>
+
+  <hr class="my-8 border-gray-300" />
+
+  <h2 class="text-xl font-bold mb-4">Pilih Akun yang Akan Digunakan</h2>
+
+<div class="max-w-2lg grid grid-cols-2 gap-4 text-gray-700">
+  <div
+    v-for="(account, index) in accounts"
+    :key="index"
+    @click="selectAccount(account)"
+    :class="[
+      'cursor-pointer p-3 border rounded hover:bg-green-100 flex items-center space-x-3',
+      user?.username === account.username ? 'bg-green-200' : 'bg-white'
+    ]"
+  >
+    <img
+      v-if="account.photo"
+      :src="account.photo"
+      alt="Foto Profil"
+      class="w-10 h-10 rounded-full object-cover"
+    />
+    <div>
+      <strong>{{ account.username }}</strong> — {{ account.email }}<br />
+      <small>{{ account.name }} | {{ account.phone }}</small>
+    </div>
+  </div>
+</div>
+
 </template>
+
 
           <template v-else>
             <p class="text-gray-500 italic">Silakan pilih menu di sebelah kiri.</p>
