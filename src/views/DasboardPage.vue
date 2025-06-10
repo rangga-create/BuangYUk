@@ -189,7 +189,7 @@ const handlePelajariClick = () => {
 
 
     <section class="py-16 px-4 md:px-12 text-center">
-      <h2 class="text-2xl font-bold mb-32">Mengapa Bang Sampah?</h2>
+      <h2 class="text-2xl font-bold mb-32">Mengapa BuangYuk?</h2>
       <div class="space-y-8 max-w-4xl mx-auto">
         <GambarDasboard
           title="Pengelolaan Sampah yang Mudah"
