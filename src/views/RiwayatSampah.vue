@@ -293,10 +293,11 @@ onBeforeUnmount(() => {
     </div>
 
 
+  </div>
+
     <footer class="text-center py-6 text-sm text-white bg-green-700 mt-10">
       Copyright 2054 My_Tutor | Designed By BuangYuk
     </footer>
-  </div>
 </template>
 
 

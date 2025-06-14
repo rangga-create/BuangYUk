@@ -15,10 +15,10 @@ defineProps({
     class="flex items-center gap-10 mb-[150px]"
     :class="reverse ? 'flex-row-reverse text-left' : 'flex-row text-left'"
   >
- 
+
     <div class="relative w-[250px] h-[300px] rounded-4xl">
       <img
-        :src="img"
+        src="/public/img/pengelolaan.png"
         alt="icon"
         class="w-full h-full object-cover rounded-4xl relative z-10"
       />
